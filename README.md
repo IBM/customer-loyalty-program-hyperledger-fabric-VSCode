@@ -38,7 +38,7 @@ This code pattern is for developers looking to start building blockchain applica
 + [Bootstrap](https://getbootstrap.com/) Bootstrap is an open source toolkit for developing with HTML, CSS, and JS
 
 
-# Setup Locally
+# Running the Application
 
 Follow these steps to setup and run this code pattern. The steps are described in detail below.
 
