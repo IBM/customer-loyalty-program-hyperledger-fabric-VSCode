@@ -62,7 +62,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 3. [Deploy Network](#3-deploy-network)
       - [Deploy to Fabric locally](./docs/deploy-local-fabric.md)
       - [Deploy to IBM Blockchain Starter Plan](./docs/deploy-ibm-starter.md)
-5. [Run Application](#5-run-application)
+4. [Run Application](#4-run-application)
 
 
 ## 1. Clone the repo
@@ -92,7 +92,7 @@ The bna can be deployed to a local instance of Fabric or can use IBM Blockchain 
 - [Deploy to IBM Blockchain Starter Plan](./docs/deploy-ibm-starter.md)
 
 
-## 5. Run Application
+## 4. Run Application
 
 Go into the `web-app` folder and install the dependency:
 
@@ -114,7 +114,9 @@ The application should now be running at:
 </div>
 </br>
 
-If hosting on IBM Blockchain Starter Plan, then you can [deploy the app to IBM Cloud](./docs/deploy-app-cloud.md).
+### Deploy application to IBM Cloud
+
+If your hosting the network on IBM Blockchain Starter Plan, then you can [deploy the app to IBM Cloud](./docs/deploy-app-cloud.md).
 
 ## Links
 * [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/en/latest/)

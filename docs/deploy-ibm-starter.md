@@ -180,3 +180,7 @@ You can then test this card by doing.
 ```
 composer network ping -c admin@clp-network
 ```
+
+If the command returns successfully, your setup is complete.
+
+Your ready to [run the application](../README.md#5-run-application)
