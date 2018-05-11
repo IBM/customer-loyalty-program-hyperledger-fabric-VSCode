@@ -1,14 +1,14 @@
 # Deploy to IBM Blockchain Starter Plan
 
+**Note** These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://ibm-blockchain.github.io/platform-deployment/)
+
 In this section we will:
 - [Create IBM Blockchain Starter Plan service](#create-ibm-blockchain-starter-plan-service)
 - [Prepare a local Business Network card for Network Administration](#prepare-a-local-business-network-card-for-network-administration)
 - [Uploading your Certificate to the Monitor](#uploading-your-certificate-to-the-monitor)
 - [Deploying the Business Network Archive](#deploying-the-business-network-archive)
-- [Create a Business network card which can interact with the deployed network](create-a-business-network-card-which-can-interact-with-the-deployed-network)
+- [Create a Business network card which can interact with the deployed network](#create-a-business-network-card-which-can-interact-with-the-deployed-network)
 
-
-These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://ibm-blockchain.github.io/platform-deployment/)
 
 ## Create IBM Blockchain Starter Plan service
 

@@ -33,7 +33,7 @@ cd fabric-dev-servers/
 
 ## Deploy network to Hyperledger Fabric instance
 
-**Note** The following instruction to deploy to fabric instance are used from the [Developer Tutorial](https://hyperledger.github.io/composer/latest/tutorials/developer-tutorial) for Hyperledger Composer.
+**Note** The following steps to deploy to fabric instance follow the guide [Developer Tutorial](https://hyperledger.github.io/composer/latest/tutorials/developer-tutorial) for Hyperledger Composer.
 
 
 Now, we are ready to deploy the business network to Hyperledger Fabric. This requires the Hyperledger Composer chaincode to be installed on the peer,then the business network archive (.bna) must be sent to the peer, and a new participant, identity, and associated card must be created to be the network administrator. Finally, the network administrator business network card must be imported for use, and the network can then be pinged to check it is responding.

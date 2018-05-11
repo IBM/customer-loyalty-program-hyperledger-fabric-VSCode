@@ -29,8 +29,8 @@ This code pattern is for developers looking to start building blockchain applica
 
 # Included Components
 
-* [Hyperledger Composer](https://hyperledger.github.io/composer/latest/) Hyperledger Composer is an extensive, open development toolset and framework to make developing blockchain applications easier
-* [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io) Hyperledger Fabric is a platform for distributed ledger solutions, underpinned by a modular architecture delivering high degrees of confidentiality, resiliency, flexibility and scalability.
+* [Hyperledger Composer v0.19.4](https://hyperledger.github.io/composer/latest/) Hyperledger Composer is an extensive, open development toolset and framework to make developing blockchain applications easier
+* [Hyperledger Fabric v1.1](https://hyperledger-fabric.readthedocs.io) Hyperledger Fabric is a platform for distributed ledger solutions, underpinned by a modular architecture delivering high degrees of confidentiality, resiliency, flexibility and scalability.
 * [IBM Blockchain Starter Plan](https://console.bluemix.net/catalog/services/blockchain) The IBM Blockchain Platform Starter Plan allows to build and try out blockchain network in an environment designed for development and testing
 
 ## Featured technology
@@ -73,14 +73,20 @@ Clone the `Customer Loyalty Program with Blockchain` repo locally. In a terminal
 
 ## 2. Generate the Business Network Archive
 
-Next generate the Business Network Archive (BNA) file from the root directory:
+Next we will generate the Business Network Archive (BNA) file from the root directory.  
+This file will contain your network including:
+- the model defined in the `org.clp.biznet.cto` file in the `models` folder
+- the logic behind transactions in the `logic.js` file in the `lib` folder
+- permissions defined in the `permissions.acl` file
+- queries defined in the `queries.qry` file
 
+Run the following the command to create the bna file:
 ```
-cd Customer-Loyalty-Program/
+cd customer-loyalty-program/
 npm install
 ```
 
-The `composer archive create` command in `package.json` has created a file called `clp-network@0.0.1.bna`.
+The `composer archive create` command in `package.json` has created a file called `clp-network@0.0.1.bna`.   
 
 
 
