@@ -1,0 +1,14 @@
+# Mac files.
+**/.DS_Store
+.DS_Store
+
+node_modules
+npm-debug.log
+.npm
+
+.git
+
+composer-logs
+
+*.bna
+*.card

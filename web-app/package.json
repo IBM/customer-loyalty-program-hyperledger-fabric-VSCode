@@ -1,0 +1,23 @@
+{
+  "name": "clp-network",
+  "version": "0.0.1",
+  "description": "A customer loyalty program network",
+  "scripts": {
+    "start": "composer card import -f admin@clp-network.card && node app.js",
+    "test": "mocha --recursive"
+  },  
+  "author": "Raheel",
+  "email": "raheel.zubairy@ibm.com",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "composer-cli": "^0.19.4",
+    "composer-admin": "^0.19.4",
+    "composer-client": "^0.19.4",
+    "composer-common": "^0.19.4",
+    "composer-connector-embedded": "^0.19.4",
+    "body-parser": "^1.18.2",
+    "composer-playground": "latest",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}

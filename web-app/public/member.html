@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Customer Loyalty Program</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/home">Customer Loyalty Program</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+
+      </ul>
+
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">About</a>
+        </li>
+
+        <li class="nav-item text-nowrap dropdown">
+          <a class="nav-link dropdown-toggle " href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign-in</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" href="/member">Member</a>
+            <a class="dropdown-item" href="/partner">Partner</a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron" id="loginSection" style="display:block;">
+    <div class="container">
+      <h2>Member Sign In</h2>
+      <br>
+      <div class="account-number">
+        <p> Enter Account Number
+          <input>
+        </p>
+      </div>
+      <div class="card-id">
+        <p> Enter Access Key
+          <input>
+        </p>
+      </div>
+      <button class="btn btn-primary sign-in-member">SIGN IN</button>
+    </div>
+  </div>
+
+
+  <div id="transactionSection" style="display:none;">
+
+
+    <div class="jumbotron" id="loginSection" style="display:block;">
+      <div class="container">
+
+        <table>
+          <tr>
+            <td>
+              <div style="padding-right: 20px">
+                <h2>name:</h2>
+                <h2>account #:</h2>
+                <h2>points:</h2>
+              </div>
+            </td>
+            <td>
+              <div class="heading"> </div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="text-center">
+        <h5 class="text-center">Earn points through purchases, redeem points on deals and view your transactions</h5>
+        <br>
+      </div>
+
+
+      <div class="row">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item tab-width">
+            <a class="nav-link active" id="earn-tab" data-toggle="tab" href="#earn" role="tab" aria-controls="earn" aria-selected="true">Earn Points</a>
+          </li>
+          <li class="nav-item tab-width">
+            <a class="nav-link" id="redeem-tab" data-toggle="tab" href="#redeem" role="tab" aria-controls="redeem" aria-selected="false">Redeem Points</a>
+          </li>
+          <li class="nav-item tab-width">
+            <a class="nav-link" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="false">Transactions</a>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="earn" role="tabpanel" aria-labelledby="earn-tab">
+            <br>
+            <h5> Earn Points through purchases </h5>
+
+            <br>
+            <div class="earnPartnerId">
+              <p> <b>Choose the Partner to puchase from: </b></p>
+              <div class="earn-partner">
+                <p>
+                  <select class="form-control">
+                                        <option disabled="" selected="" value="disabled">Loading...</option>
+                                    </select>
+                </p>
+              </div>
+            </div>
+
+            <br>
+            <p> <b> Purchase Deals </b></p>
+
+            <p>
+              <button class="btn btn-primary earn-points-30">Purchase Item X for $20 and earn 30 points </button> <br />
+              <button class="btn btn-primary earn-points-80">Purchase Item Y for $50 and earn 80 points </button> <br />
+              <button class="btn btn-primary earn-points-200">Purchase Item Z for $100 and earn 200 points </button> <br />
+            </p>
+
+            <br>
+            <p><b> Purchase Item for specific price </b><br />
+              <b> $1 = 1 points </b></p>
+
+            <div class="earnPoints">
+              <p> Enter price item
+                <input>
+              </p>
+            </div>
+
+            <button class="btn btn-secondary earn-points-transaction">Purchase and earn points</button>
+            <hr class="featurette-divider">
+
+          </div>
+
+          <div class="tab-pane fade" id="redeem" role="tabpanel" aria-labelledby="redeem-tab">
+            <br>
+            <h5> Redeem Points on Deals </h5>
+
+            <br>
+            <div class="usePartnerId">
+              <p> <b>Choose the Partner to redeem points from: </b></p>
+              <div class="use-partner">
+                <p>
+                  <select class="form-control">
+                                            <option disabled="" selected="" value="disabled">Loading...</option>
+                                        </select>
+                </p>
+              </div>
+            </div>
+
+            <br>
+            <p> <b> Loyalty Program Deals </b></p>
+
+            <p>
+              <button class="btn btn-primary use-points-50">Get Item A for 50 points </button> <br />
+              <button class="btn btn-primary use-points-150">Get Item B for 150 points </button> <br />
+              <button class="btn btn-primary use-points-200">Get Item C for 200 points </button> <br />
+            </p>
+
+            <br>
+            <p><b> Get item for specific points </b>
+              <p>
+
+                <div class="usePoints">
+                  <p> Enter points value of specific item
+                    <input>
+                  </p>
+                </div>
+
+                <button class="btn btn-secondary use-points-transaction">Get item and redeem points</button>
+
+                <hr class="featurette-divider">
+
+          </div>
+
+          <div class="tab-pane fade" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+            <br>
+            <p>View transactions by transaction type </p>
+            <br>
+            <ul class="nav nav-tabs" id="transactionsTypeTab" role="tablist">
+              <li class="nav-item ">
+                <a class="nav-link active" id="points-allocated-tab" data-toggle="tab" href="#points-allocated" role="tab" aria-controls="points-allocated" aria-selected="true">Points Allocated</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" id="points-redeemed-tab" data-toggle="tab" href="#points-redeemed" role="tab" aria-controls="points-redeemed" aria-selected="false">Points Redeemed</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="points-allocated" role="tabpanel" aria-labelledby="points-allocated-tab">
+                <br>
+                <h4>Points Earned Transactions</h4>
+                <br>
+                <div class="points-allocated-transactions"> </div>
+                <br><br>
+              </div>
+
+              <div class="tab-pane fade " id="points-redeemed" role="tabpanel" aria-labelledby="points-redeemed-tab">
+                <br>
+                <h4>Points Redeemed Transactions</h4>
+                <br>
+                <div class="points-redeemed-transactions"> </div>
+                <br><br>
+              </div>
+
+            </div>
+
+            <hr class="featurette-divider">
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+      <div class="container text-center">
+        <div class="loader" id="loader" style="display:none;"></div>
+      </div>
+
+    </div>
+    <!-- /container -->
+
+  </div>
+
+</body>
+
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script src="/scripts/member.js"></script>

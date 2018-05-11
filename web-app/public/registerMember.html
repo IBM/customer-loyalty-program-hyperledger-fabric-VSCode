@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Customer Loyalty Program</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/home">Customer Loyalty Program</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+
+      </ul>
+
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">About</a>
+        </li>
+
+        <li class="nav-item text-nowrap dropdown">
+          <a class="nav-link dropdown-toggle " href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign-in</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" href="/member">Member</a>
+            <a class="dropdown-item" href="/partner">Partner</a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Member Registration</h1>
+      <p>Complete the form below to register as member on the network</p>
+    </div>
+  </div>
+
+  <div class="container" id="registration" style="display:block;">
+    <div class="col-md-6 order-md-1">
+      <div class="mb-3">
+        <label for="account-number"><b>Account Number </b><span class="text-muted"> (identification on the network)</span></label>
+        <div class="input-group account-number">
+          <input type="text" class="form-control" id="account-number" placeholder="" required>
+          <div class="invalid-feedback" style="width: 100%;">
+            ID is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="card-id"><b>Access Card ID </b><span class="text-muted"> (access id for your account)</span></label>
+        <div class="input-group card-id">
+          <input type="text" class="form-control" id="card-id" placeholder="" required>
+          <div class="invalid-feedback" style="width: 100%;">
+            ID is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3 first-name">
+          <label for="firstName"><b>First name</b></label>
+          <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            Valid first name is required.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3 last-name">
+          <label for="lastName"><b>Last name</b></label>
+          <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+          <div class="invalid-feedback">
+            Valid last name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-3 email">
+          <label for="email"><b>Email</b></label>
+          <input type="text" class="form-control" id="email" placeholder="you@example.com" value="" required>
+          <div class="invalid-feedback">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3 phone-number">
+          <label for="phone-number"><b>Phone Number</b></label>
+          <input type="text" class="form-control" id="phone-number" placeholder="555-555-5555" value="" required>
+          <div class="invalid-feedback">
+            Please enter your phone number.
+          </div>
+        </div>
+      </div>
+
+      <div>
+
+        <!--h4>Usage of Information</h4>
+            <p>The member is identified on the network with their ID.  They </p>
+        </div-->
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block register-member" type="submit">Register</button>
+      </div>
+
+    </div>
+    <hr class="featurette-divider">
+  </div>
+
+  <div class="container text-center">
+    <div class="loader" id="loader" style="display:none;"></div>
+  </div>
+
+  <div class="container text-center" id="successful-registration" style="display:none;">
+    <h4>successfully registered on the blockchain network</h4>
+    <div class="row" style="display:block;">
+      <br>
+      <div><a class="btn btn-primary" href="/member" role="button">Member Sign In &raquo;</a></div>
+      <br>
+      <div><a class="btn btn-primary" href="/home" role="button">Home &raquo;</a></div>
+    </div>
+    <hr class="featurette-divider">
+  </div>
+
+
+
+
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script src="/scripts/register.js"></script>
