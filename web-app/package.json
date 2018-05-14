@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "A customer loyalty program network",
   "scripts": {
-    "start": "composer card import -f admin@clp-network.card && node app.js",
+    "start": "node app.js",
     "test": "mocha --recursive"
-  },  
+  },
   "author": "Raheel",
   "email": "raheel.zubairy@ibm.com",
   "license": "Apache-2.0",

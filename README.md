@@ -2,11 +2,11 @@
 
 A customer loyalty program allows companies to reward customers who frequently make purchases. Program members are able to earn points on purchases, which can translate into some type of reward such as discount, freebie or special customer treatment.  The members work toward a certain amount of points to redeem their reward.  These programs can have multiple companies as partners on the program, to cater to a customer base.  However, current loyalty program systems are restraint on relations between partners, and with visibility to members. These restraints can be removed by creating the customer loyalty program on a blockchain network.
 
-This blockchain model for a customer loyalty program enhances the value of points to loyalty program members and brings in new value to the partners. Participants in this network have a more level relation among each other and points are in the centric position to connect all participants.
+This blockchain model for a customer loyalty program enhances the value of points to loyalty program members and brings in new value to the partners by creating trusted transactions. Participants in this network have a more level relation among each other and points are in the centric position to connect all participants.
 
-In this code pattern, we will create a customer loyalty program as a blockchain application using Hyperledger Composer API and Node.js. The application will allow members to register on the network where they will create their account.  They will be identified on the network with their account number and will create a access key which they will use to sign in.  This access key is used as the card id for the member to make transactions and query records.  The member once signed in, can make transactions to earn points and redeem points from the partners on the network. They can view their transactions as part of the blockchain ledger.  This code pattern illustrates the use of permissions as part of the network where a member can only view their transactions.
+In this code pattern, we will create a customer loyalty program as a blockchain web application using Hyperledger Composer API and Node.js. The application will allow members to register on the network where they will create their account.  They will be identified on the network with their account number and will create a access key which they will use to sign in.  This access key is used as the card id for the member to make transactions and query records.  The member once signed in, can make transactions to earn points and redeem points from the partners on the network. They can view their transactions as part of the blockchain ledger.  This code pattern illustrates the use of permissions as part of the network where a member can only view their transactions.
 
-Similarly for the partner, they will register by creating an identity on the network and an access key which will be used to view their records.  Partners are allowed to view only transactions they were part of, and thus can keep track of all their transactions where they allocated or redeemed points.  The application shows a basic dashboard for the partner displaying the total points that they have allocated and redeemed to members.  As transactions get complex, the partner can perform analysis on their transactions to create informative dashboards.
+Similarly for the partner, they will register by creating an identity on the network and an access key which will be used to view their records.  Partners are allowed to view only transactions they were part of, and thus can keep track of all their transactions where they allocated or redeemed points.  The web application shows a basic dashboard for the partner displaying the total points that they have allocated and redeemed to members.  As transactions get complex, the partner can perform analysis on their transactions to create informative dashboards.
 
 This code pattern is for developers looking to start building blockchain applications with Hyperledger Composer. When the reader has completed this code pattern, they will understand how to:
 
@@ -20,6 +20,8 @@ This code pattern is for developers looking to start building blockchain applica
 <p align="center">
   <img width="650" height="200" src="docs/doc-images/diagram.png">
 </p>
+
+**Note** The blockchain network will have multiple members and partners
 
 1. Member is registered on the network
 2. Member can sign-in to make transactions to earn points, redeem points and view their transactions
@@ -50,11 +52,11 @@ Follow these steps to setup and run this code pattern. The steps are described i
   * to install specific Node version you can use [nvm](https://davidwalsh.name/nvm)
 - [Hyperledger Composer](https://hyperledger.github.io/composer/installing/development-tools.html)
   * to install composer cli
-    `npm install -g composer-cli`
+    `npm install -g composer-cli@0.19.4`
   * to install composer-rest-server
-    `npm install -g composer-rest-server`
+    `npm install -g composer-rest-server@0.19.4`
   * to install generator-hyperledger-composer
-    `npm install -g generator-hyperledger-composer`
+    `npm install -g generator-hyperledger-composer@0.19.4`
 
 ## Steps
 1. [Clone the repo](#1-clone-the-repo)
@@ -69,7 +71,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 
 Clone the `Customer Loyalty Program with Blockchain` repo locally. In a terminal, run:
 
-`git clone https://github.com/IBM/Customer-Loyalty-Program`
+`git clone https://github.com/IBM/customer-loyalty-program`
 
 ## 2. Generate the Business Network Archive
 

@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 
+//////Member Access
 
 //Members to have access only to their own account
 rule MemberAccessOwnRecord {
@@ -23,7 +24,7 @@ rule MemberAccessOwnRecord {
     action: ALLOW
 }
 
-//Members now to have access to other member accounts
+//Members Not to have access to other member accounts
 rule MemberAccessMembers {
     description: "Allow memebers to access only their profile"
     participant: "org.clp.biznet.Member"
@@ -41,7 +42,7 @@ rule MemberAccessPartners {
     action: ALLOW
 }
 
-//Members 
+//Members to have access only to EarnPoints transaction where they are the member
 rule MemberAccessEarnPoints {
     description: "Allow memebers to access only their profile"
     participant(p): "org.clp.biznet.Member"
@@ -51,7 +52,7 @@ rule MemberAccessEarnPoints {
     action: ALLOW
 }
 
-//Members 
+//Members to have access only to UsePoints transaction where they are the member
 rule MemberAccessUsePoints {
     description: "Allow memebers to access only their profile"
     participant(p): "org.clp.biznet.Member"
@@ -64,6 +65,7 @@ rule MemberAccessUsePoints {
 
 //////Partner Access
 
+//Partners to have access only to their own account
 rule PartnerAccessOwnRecord {
     description: "Allow memebers to access only their profile"
     participant(p): "org.clp.biznet.Partner"
@@ -73,7 +75,7 @@ rule PartnerAccessOwnRecord {
     action: ALLOW
 }
 
-//
+//Partners Not to have access to other member accounts
 rule PartnerAccessPartner {
     description: "Allow memebers to access only their profile"
     participant(p): "org.clp.biznet.Partner"
@@ -83,7 +85,7 @@ rule PartnerAccessPartner {
     action: DENY
 }
 
-//
+//Partners Not to have access to Members on the network
 rule PartnerAccessMember {
     description: "Allow memebers to access only their profile"
     participant: "org.clp.biznet.Partner"
@@ -92,35 +94,25 @@ rule PartnerAccessMember {
     action: DENY
 }
 
-//
+//Partners to have read access to EarnPoints transaction where they are the member
 rule PartnerAccessEarnPoints {
     description: "Allow residents to access only their profile"
     participant(p): "org.clp.biznet.Partner"
-    operation: ALL
+    operation: READ
     resource(r): "org.clp.biznet.EarnPoints"
     condition: (r.partner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }
 
-// 
+//Partners to have read access to EarnPoints transaction where they are the member
 rule PartnerAccessUsePoints {
     description: "Allow memebers to access only their profile"
     participant(p): "org.clp.biznet.Partner"
-    operation: ALL
+    operation: READ
     resource(r): "org.clp.biznet.UsePoints"
     condition: (r.partner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }
-
-/*
-rule Default {
-    description: "Allow all participants access to all resources"
-    participant: "ANY"
-    operation: ALL
-    resource: "org.clp.biznet.*"
-    action: ALLOW
-}*/
-
 
 rule SystemACL {
   description:  "System ACL to permit all access"
@@ -145,4 +137,3 @@ rule NetworkAdminSystem {
     resource: "org.hyperledger.composer.system.**"
     action: ALLOW
 }
-
