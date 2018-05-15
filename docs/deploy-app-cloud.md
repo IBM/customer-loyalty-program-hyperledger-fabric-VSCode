@@ -44,4 +44,4 @@ applications:
 cf push
 ```
 
-View a sample app here: http://clp-on-ibm-blockchain.mybluemix.net/
+View a sample app here: http://clp-test-ibm-blockchain.mybluemix.net/
