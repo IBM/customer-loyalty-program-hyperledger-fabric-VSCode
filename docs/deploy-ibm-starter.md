@@ -54,7 +54,8 @@ In the `Overview` section, click on `Connection Profile`.  In the pop up option,
   <img width="800"  src="doc-images/download-connection-json.png">
 </p>
 
-Save this file as `connection-profile.json`. The downloaded file contains a registrar element containing an enrollId and enrollSecret that is specific to your service/organization. For example:
+Save this file as `connection-profile.json`. Ensure this file has `channels` fields, otherwise you will need to add peers to your channel before downloading.  
+The downloaded file contains a registrar element containing an enrollId and enrollSecret that is specific to your service/organization. For example:
 
 ```
 "registrar": [
@@ -85,7 +86,7 @@ composer card import -f <Your Card File Name>
 ```
 
 Make a note of this card name as it will be used for commands below as `<Your Card Name>`.
-Now request an identity for the admin from the fabric Certificate Authority. The certificates will be stored in a `credentials` directory.
+Now request an identity for the admin from the fabric Certificate Authority. The certificates will be stored in a `credentials` folder in the same directory.
 
 ```
 composer identity request --card <Your Card Name> ./credentials
