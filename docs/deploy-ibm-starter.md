@@ -54,7 +54,7 @@ In the `Overview` section, click on `Connection Profile`.  In the pop up option,
   <img width="800"  src="doc-images/download-connection-json.png">
 </p>
 
-The downloaded file contains a registrar element containing an enrollId and enrollSecret that is specific to your service/organization. For example:
+Save this file as `connection-profile.json`. The downloaded file contains a registrar element containing an enrollId and enrollSecret that is specific to your service/organization. For example:
 
 ```
 "registrar": [
@@ -78,20 +78,13 @@ Now in your terminal, run the following command to create a Composer business ne
 composer card create -p connection-profile.json -u <enrollID> -s <enroll-secret> -r PeerAdmin -r ChannelAdmin
 
 ```
-View the card created:
-```
-composer card list
-```
-
-Make a note of this card name as it will be used for commands below as `<Your Card Name>`
-
-
-Next, import the card into the card store.
+This will create a card file with extension '.card'.  Import this created card into the card store.
 
 ```
-composer card import -f <Your Card Name>
+composer card import -f <Your Card File Name>
 ```
 
+Make a note of this card name as it will be used for commands below as `<Your Card Name>`.
 Now request an identity for the admin from the fabric Certificate Authority. The certificates will be stored in a `credentials` directory.
 
 ```
