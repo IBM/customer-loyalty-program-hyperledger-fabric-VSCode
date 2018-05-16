@@ -89,7 +89,7 @@ Make a note of this card name as it will be used for commands below as `<Your Ca
 Now request an identity for the admin from the fabric Certificate Authority. The certificates will be stored in a `credentials` folder in the same directory.
 
 ```
-composer identity request --card <Your Card Name> ./credentials
+composer identity request --card <Your Card Name> --path ./credentials
 ```
 
 Once you have the credentials created, you can delete the card as it may cause conflict error, when importing card using the credentials from the `credentials` folder.
