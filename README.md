@@ -10,8 +10,8 @@ Similarly for the partner, they will register by creating an identity on the net
 
 This code pattern is for developers looking to start building blockchain applications with Hyperledger Composer. When the reader has completed this code pattern, they will understand how to:
 
-* Create basic business network using Hyperledger Composer
-* Deploy the network to an instance of Hyperledger Fabric locally and IBM Blockchain
+* Create basic business network using Hyperledger Composer framework
+* Deploy the network to an instance of Hyperledger Fabric locally or on IBM Blockchain Starter Plan
 * Build a Node.js web application to interact with the blockchain network using Composer API
 
 

@@ -177,4 +177,4 @@ composer network ping -c admin@clp-network
 
 If the command returns successfully, your setup is complete.
 
-Your ready to [run the application](../README.md#5-run-application)
+Your ready to [run the application](../README.md#4-run-application)
