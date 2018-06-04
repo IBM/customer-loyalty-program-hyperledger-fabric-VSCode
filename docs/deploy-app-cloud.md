@@ -38,10 +38,10 @@ applications:
   memory: 256M
 ```
 
-* Now you are ready to deploy the application to IBM Cloud.  You can use cloud foundry cli to deploy the application.  In the `web-app` directory, run the following command.
+* Now you are ready to deploy the application to IBM Cloud.  You can use [IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install) to deploy the application.  In the `web-app` directory, run the following command.
 
 ```
-cf push
+bx push
 ```
 
 View a sample app here: http://clp-test-ibm-blockchain.mybluemix.net/

@@ -1,6 +1,11 @@
 # Deploy to IBM Blockchain Starter Plan
 
-**Note** These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://ibm-blockchain.github.io/platform-deployment/)
+## Prerequisite
+- [IBM Cloud Account](https://console.bluemix.net/)
+
+## Steps
+>**Note** These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://ibm-blockchain.github.io/platform-deployment/)
+
 
 In this section we will:
 - [Create IBM Blockchain Starter Plan service](#create-ibm-blockchain-starter-plan-service)

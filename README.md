@@ -45,11 +45,14 @@ This code pattern is for developers looking to start building blockchain applica
 Follow these steps to setup and run this code pattern. The steps are described in detail below.
 
 ## Prerequisite
-- Operating Systems: Ubuntu Linux 14.04 / 16.04 LTS (both 64-bit), or Mac OS 10.12
-- [Docker](https://www.docker.com/) (Version 17.03 or higher)
 - [npm](https://www.npmjs.com/)  (v5.x)
 - [Node](https://nodejs.org/en/) (version 8.9 or higher - note version 9 is not supported)
-  * to install specific Node version you can use [nvm](https://davidwalsh.name/nvm)
+* to install specific Node version you can use [nvm](https://davidwalsh.name/nvm)
+
+  Example:
+  + 1. `nvm install 8.9.4`
+  + 2. `nvm use v8.9.4`
+  + 3. Output `Now using node v8.9.4 (npm v6.1.0)`
 - [Hyperledger Composer](https://hyperledger.github.io/composer/installing/development-tools.html)
   * to install composer cli
     `npm install -g composer-cli@0.19.4`
@@ -129,6 +132,7 @@ If your hosting the network on IBM Blockchain Starter Plan, then you can [deploy
 ## Links
 * [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/en/latest/)
 * [Hyperledger Composer Docs](https://hyperledger.github.io/composer/latest/introduction/introduction.html)
+* [Demo on Youtube](https://youtu.be/nLHBmPQa_FY)
 
 ## License
 [Apache 2.0](LICENSE)
