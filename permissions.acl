@@ -16,7 +16,7 @@
 
 //Members to have access only to their own account
 rule MemberAccessOwnRecord {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Member to access only their profile"
     participant(p): "org.clp.biznet.Member"
     operation: ALL
     resource(r): "org.clp.biznet.Member"
@@ -26,7 +26,7 @@ rule MemberAccessOwnRecord {
 
 //Members Not to have access to other member accounts
 rule MemberAccessMembers {
-    description: "Allow memebers to access only their profile"
+    description: "Deny Member access to other Member accounts"
     participant: "org.clp.biznet.Member"
     operation: ALL
     resource: "org.clp.biznet.Member"
@@ -35,7 +35,7 @@ rule MemberAccessMembers {
 
 //Members have access to Partners on the network
 rule MemberAccessPartners {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Member access to all Partners on the network"
     participant: "org.clp.biznet.Member"
     operation: ALL
     resource: "org.clp.biznet.Partner"
@@ -44,7 +44,7 @@ rule MemberAccessPartners {
 
 //Members to have access only to EarnPoints transaction where they are the member
 rule MemberAccessEarnPoints {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Member access only to EarnPoints transaction where they are the member"
     participant(p): "org.clp.biznet.Member"
     operation: ALL
     resource(r): "org.clp.biznet.EarnPoints"
@@ -54,7 +54,7 @@ rule MemberAccessEarnPoints {
 
 //Members to have access only to UsePoints transaction where they are the member
 rule MemberAccessUsePoints {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Member access only to UsePoints transaction where they are the member"
     participant(p): "org.clp.biznet.Member"
     operation: ALL
     resource(r): "org.clp.biznet.UsePoints"
@@ -67,7 +67,7 @@ rule MemberAccessUsePoints {
 
 //Partners to have access only to their own account
 rule PartnerAccessOwnRecord {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Partner to access only their profile"
     participant(p): "org.clp.biznet.Partner"
     operation: ALL
     resource(r): "org.clp.biznet.Partner"
@@ -75,28 +75,27 @@ rule PartnerAccessOwnRecord {
     action: ALLOW
 }
 
-//Partners Not to have access to other member accounts
+//Partners Not to have access to other partner accounts
 rule PartnerAccessPartner {
-    description: "Allow memebers to access only their profile"
+    description: "Deny Partner access to other Partner accounts"
     participant(p): "org.clp.biznet.Partner"
     operation: ALL
     resource(r): "org.clp.biznet.Partner"
-    condition: (r.getIdentifier() === p.getIdentifier())
     action: DENY
 }
 
 //Partners Not to have access to Members on the network
 rule PartnerAccessMember {
-    description: "Allow memebers to access only their profile"
+    description: "Deny Partner access to Members on the network"
     participant: "org.clp.biznet.Partner"
     operation: ALL
     resource: "org.clp.biznet.Member"
     action: DENY
 }
 
-//Partners to have read access to EarnPoints transaction where they are the member
+//Partners to have read access to EarnPoints transaction where they are the partner
 rule PartnerAccessEarnPoints {
-    description: "Allow residents to access only their profile"
+    description: "Allow Partners read only access to EarnPoints transaction where they are the partner"
     participant(p): "org.clp.biznet.Partner"
     operation: READ
     resource(r): "org.clp.biznet.EarnPoints"
@@ -104,9 +103,9 @@ rule PartnerAccessEarnPoints {
     action: ALLOW
 }
 
-//Partners to have read access to EarnPoints transaction where they are the member
+//Partners to have read access to UsePoints transaction where they are the partner
 rule PartnerAccessUsePoints {
-    description: "Allow memebers to access only their profile"
+    description: "Allow Partners read only access to UsePoints transaction where they are the partner"
     participant(p): "org.clp.biznet.Partner"
     operation: READ
     resource(r): "org.clp.biznet.UsePoints"
