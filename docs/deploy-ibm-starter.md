@@ -4,7 +4,7 @@
 - [IBM Cloud Account](https://console.bluemix.net/)
 
 ## Steps
->**Note** These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://ibm-blockchain.github.io/platform-deployment/)
+>**Note** These steps follow the instructions presented in the guide [Deploying Hyperledger Composer Business Network to IBM Blockchain Platform Enterprise Plan on IBM Cloud](https://console.bluemix.net/docs/services/blockchain/develop_starter.html#deploying-a-business-network)
 
 
 In this section we will:
