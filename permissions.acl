@@ -78,9 +78,9 @@ rule PartnerAccessOwnRecord {
 //Partners Not to have access to other partner accounts
 rule PartnerAccessPartner {
     description: "Deny Partner access to other Partner accounts"
-    participant(p): "org.clp.biznet.Partner"
+    participant: "org.clp.biznet.Partner"
     operation: ALL
-    resource(r): "org.clp.biznet.Partner"
+    resource: "org.clp.biznet.Partner"
     action: DENY
 }
 
