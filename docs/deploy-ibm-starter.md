@@ -8,14 +8,20 @@
 
 
 In this section we will:
+
+#### Deploy the network (bna) to IBM Blockchain Starter Plan
 - [Create IBM Blockchain Starter Plan service](#create-ibm-blockchain-starter-plan-service)
 - [Prepare a local Business Network card for Network Administration](#prepare-a-local-business-network-card-for-network-administration)
 - [Uploading your Certificate to the Monitor](#uploading-your-certificate-to-the-monitor)
 - [Deploying the Business Network Archive](#deploying-the-business-network-archive)
 - [Create a Business network card which can interact with the deployed network](#create-a-business-network-card-which-can-interact-with-the-deployed-network)
 
+#### Configure participant's connection profile for IBM Blockchain Starter Plan
+- [Update App to IBM Blockchain Starter Plan connection profile](#update-app-to-ibm-blockchain-starter-plan-connection-profile)
 
-## Create IBM Blockchain Starter Plan service
+## Deploy the network (bna) to IBM Blockchain Starter Plan
+
+#### Create IBM Blockchain Starter Plan service
 
 Create the IBM Blockchain Starter Plan service in IBM Blockchain.  Ensure you have IBM account
 
@@ -51,7 +57,7 @@ This service plan has been added to your IBM Cloud. In your blockchain service -
 </p>
 
 
-## Prepare a local Business Network card for Network Administration
+#### Prepare a local Business Network card for Network Administration
 
 In the `Overview` section, click on `Connection Profile`.  In the pop up option, choose `Download`.
 
@@ -119,7 +125,7 @@ composer card list
 ```
 
 
-## Uploading your Certificate to the Monitor
+#### Uploading your Certificate to the Monitor
 
 Next, we will upload the certificates created to our blockchain monitor.
 
@@ -147,7 +153,7 @@ Next, we will upload the certificates created to our blockchain monitor.
 </p>
 
 
-## Deploying the Business Network Archive
+#### Deploying the Business Network Archive
 
 Now you can deploy your .bna file to your IBM Blockchain Platform instance. Ensure you are in the same directory as the bna file.  To install the business network, run the following command:
 
@@ -161,7 +167,7 @@ To start the business network, run the following command:
 composer network start --networkName clp-network --networkVersion 0.0.1 -c <Your Card Name> -A admin -C ./credentials/admin-pub.pem -f delete_me.card
 ```
 
-## Create a Business network card which can interact with the deployed network
+#### Create a Business network card which can interact with the deployed network
 
 Now you need a Business network card that will allow you to interact on the deployed business network which can perform actions such as issue identities. To create the card issue the following command:
 
@@ -182,4 +188,21 @@ composer network ping -c admin@clp-network
 
 If the command returns successfully, your setup is complete.
 
-Your ready to [run the application](../README.md#4-run-application)
+
+## Configure participant's connection profile for IBM Blockchain Starter Plan
+
+The [network](../../../tree/master/web-app/network) folder by default has a `local_connection.json` file, which is called by `network.js` to create connection to local Hyperledger Fabric instance.  To create participant identities for connection to IBM Blockchain Starter Plan, we'll add the `connection-profile.json` to the folder.
+
+#### Update App to IBM Blockchain Starter Plan connection profile
+
+* Add `connection-profile.json` into the `network` folder.
+
+
+* Next update `network.js` in that folder to retrieve connection from `connection-profile.json`.  You will update the [code](../web-app/network/network.js#L41) to use `connection-profile.json` instead of `./local_connection.json`
+
+<p align="center">
+  <img width="800"  src="doc-images/connection-profile-code.png">
+</p>
+
+
+Great.  Now you are ready to [run the application](../README.md#4-run-application) with IBM Blockchain Starter Plan.

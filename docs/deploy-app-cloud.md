@@ -2,16 +2,6 @@
 
 You can deploy the application to IBM Cloud with the network hosted on the IBM Blockhain Starter Plan.
 
-* First, add `connection-profile.json` into the `network` folder.
-
-
-* Next update `network.js` in that folder to retrieve connection from `connection-profile.json`.  You will update the code to use `connection-profile.json` instead of `./local_connection.json`
-
-<p align="center">
-  <img width="800"  src="doc-images/connection-profile-code.png">
-</p>
-
-
 * Next, add the `admin@clp-network.card` file to `webapp` folder.  We will deploy the card with application.
 
 * Update `package.json` file in your `web-app` folder and make the following update to the `start` script.
