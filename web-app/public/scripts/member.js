@@ -136,6 +136,10 @@ function earnPoints(formPoints) {
   var formAccountNum = $('.account-number input').val();
   var formCardId = $('.card-id input').val();
   var formPartnerId = $('.earn-partner select').find(":selected").attr('partner-id');
+  if (!formPartnerId) {
+    alert("Select partner first");
+    return;
+  }
 
   //create json data
   var inputData = '{' + '"accountnumber" : "' + formAccountNum + '", ' + '"cardid" : "' + formCardId + '", ' + '"points" : "' + formPoints + '", ' + '"partnerid" : "' + formPartnerId + '"}';
@@ -206,6 +210,11 @@ function usePoints(formPoints) {
   var formAccountNum = $('.account-number input').val();
   var formCardId = $('.card-id input').val();
   var formPartnerId = $('.use-partner select').find(":selected").attr('partner-id');
+  
+  if (!formPartnerId) {
+    alert("Select partner first");
+    return;
+  }
 
   //create json data
   var inputData = '{' + '"accountnumber" : "' + formAccountNum + '", ' + '"cardid" : "' + formCardId + '", ' + '"points" : "' + formPoints + '", ' + '"partnerid" : "' + formPartnerId + '"}';

@@ -1,65 +1,23 @@
-const AdminConnection = require('composer-admin').AdminConnection;
-const BusinessNetworkConnection = require('composer-client').BusinessNetworkConnection;
-const { BusinessNetworkDefinition, CertificateUtil, IdCard } = require('composer-common');
+const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network');
+const fs = require('fs');
+const path = require('path');
 
-//declate namespace
-const namespace = 'org.clp.biznet';
+// capture network variables from config.json
+const configPath = path.join(process.cwd(), 'config.json');
+const configJSON = fs.readFileSync(configPath, 'utf8');
+const config = JSON.parse(configJSON);
+var connection_file = config.connection_file;
+var appAdmin = config.appAdmin;
+var orgMSPID = config.orgMSPID;
+var gatewayDiscovery = config.gatewayDiscovery;
 
-//in-memory card store for testing so cards are not persisted to the file system
-const cardStore = require('composer-common').NetworkCardStoreManager.getCardStore( { type: 'composer-wallet-inmemory' } );
+const ccpPath = path.join(process.cwd(), connection_file);
+const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+const ccp = JSON.parse(ccpJSON);
 
-//admin connection to the blockchain, used to deploy the business network
-let adminConnection;
-
-//this is the business network connection the tests will use.
-let businessNetworkConnection;
-
-let businessNetworkName = 'clp-network';
-let factory;
-
-
-/*
- * Import card for an identity
- * @param {String} cardName The card name to use for this identity
- * @param {Object} identity The identity details
- */
-async function importCardForIdentity(cardName, identity) {
-
-  //use admin connection
-  adminConnection = new AdminConnection();
-  businessNetworkName = 'clp-network';
-
-  //declare metadata
-  const metadata = {
-      userName: identity.userID,
-      version: 1,
-      enrollmentSecret: identity.userSecret,
-      businessNetwork: businessNetworkName
-  };
-
-  //get connectionProfile from json, create Idcard
-  const connectionProfile = require('./local_connection.json');
-  const card = new IdCard(metadata, connectionProfile);
-
-  //import card
-  await adminConnection.importCard(cardName, card);
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
-/*
-* Reconnect using a different identity
-* @param {String} cardName The identity to use
-*/
-async function useIdentity(cardName) {
-
-  //disconnect existing connection
-  await businessNetworkConnection.disconnect();
-
-  //connect to network using cardName
-  businessNetworkConnection = new BusinessNetworkConnection();
-  await businessNetworkConnection.connect(cardName);
-}
-
 
 //export module
 module.exports = {
@@ -73,36 +31,97 @@ module.exports = {
   * @param {String} phoneNumber Member phone number
   * @param {String} email Member email
   */
- registerMember: async function (cardId, accountNumber,firstName, lastName, email, phoneNumber) {
+ registerMember: async function (cardId, accountNumber, firstName, lastName, email, phoneNumber) {
+
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
 
-      //connect as admin
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect('admin@clp-network');
+      var response = {};
 
-      //get the factory for the business network
-      factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
-      //create member participant
-      const member = factory.newResource(namespace, 'Member', accountNumber);
+      // Check to see if we've already enrolled the user.
+      const userExists = await wallet.exists(cardId);
+      if (userExists) {
+        var err = `An identity for the user ${cardId} already exists in the wallet`;
+        console.log(err);
+        response.error = err;
+        return response;
+      }
+
+      // Check to see if we've already enrolled the admin user.
+      const adminExists = await wallet.exists(appAdmin);
+      if (!adminExists) {
+        var err = `An identity for the admin user-admin does not exist in the wallet. Run the enrollAdmin.js application before retrying`;
+        console.log(err);
+        response.error = err;
+        return response;
+      }
+
+      // Create a new gateway for connecting to our peer node.
+      const gateway = new Gateway();
+      await gateway.connect(ccp, { wallet, identity: appAdmin, discovery: gatewayDiscovery });
+
+      // Get the CA client object from the gateway for interacting with the CA.
+      const ca = gateway.getClient().getCertificateAuthority();
+      const adminIdentity = gateway.getCurrentIdentity();
+
+      // Register the user, enroll the user, and import the new identity into the wallet.
+      const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: cardId, role: 'client' }, adminIdentity);
+      const enrollment = await ca.enroll({ enrollmentID: cardId, enrollmentSecret: secret });
+      const userIdentity = X509WalletMixin.createIdentity(orgMSPID, enrollment.certificate, enrollment.key.toBytes());
+      wallet.import(cardId, userIdentity);
+      console.log('Successfully registered and enrolled admin user ' + cardId + ' and imported it into the wallet');
+    
+      // Disconnect from the gateway.
+      await gateway.disconnect();
+      console.log('admin user admin disconnected');
+
+    } catch (err) {
+      //print and return error
+      console.log(err);
+      var error = {};
+      error.error = err.message;
+      return error;
+    }
+
+    await sleep(2000);
+
+    try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
+
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
+
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
+      
+      let member = {};
+      member.accountNumber = accountNumber;
       member.firstName = firstName;
       member.lastName = lastName;
       member.email = email;
       member.phoneNumber = phoneNumber;
       member.points = 0;
 
-      //add member participant
-      const participantRegistry = await businessNetworkConnection.getParticipantRegistry(namespace + '.Member');
-      await participantRegistry.add(member);
+      // Submit the specified transaction.
+      console.log('\nSubmit Create Member transaction.');
+      const createMemberResponse = await contract.submitTransaction('CreateMember', JSON.stringify(member));
+      console.log('createMemberResponse: ');
+      console.log(JSON.parse(createMemberResponse.toString()));
 
-      //issue identity
-      const identity = await businessNetworkConnection.issueIdentity(namespace + '.Member#' + accountNumber, cardId);
+      console.log('\nGet member state ');
+      const memberResponse = await contract.evaluateTransaction('GetState', accountNumber);
+      console.log('memberResponse.parse_response: ')
+      console.log(JSON.parse(JSON.parse(memberResponse.toString())));
 
-      //import card for identity
-      await importCardForIdentity(cardId, identity);
-
-      //disconnect
-      await businessNetworkConnection.disconnect('admin@clp-network');
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
 
       return true;
     }
@@ -124,31 +143,91 @@ module.exports = {
   */
   registerPartner: async function (cardId, partnerId, name) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+    
     try {
 
-      //connect as admin
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect('admin@clp-network');
+      var response = {};
 
-      //get the factory for the business network.
-      factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
-      //create partner participant
-      const partner = factory.newResource(namespace, 'Partner', partnerId);
+      // Check to see if we've already enrolled the user.
+      const userExists = await wallet.exists(cardId);
+      if (userExists) {
+        var err = `An identity for the user ${cardId} already exists in the wallet`;
+        console.log(err);
+        response.error = err;
+        return response;
+      }
+
+      // Check to see if we've already enrolled the admin user.
+      const adminExists = await wallet.exists(appAdmin);
+      if (!adminExists) {
+        var err = `An identity for the admin user-admin does not exist in the wallet. Run the enrollAdmin.js application before retrying`;
+        console.log(err);
+        response.error = err;
+        return response;
+      }
+
+      // Create a new gateway for connecting to our peer node.
+      const gateway = new Gateway();
+      await gateway.connect(ccp, { wallet, identity: appAdmin, discovery: gatewayDiscovery });
+
+      // Get the CA client object from the gateway for interacting with the CA.
+      const ca = gateway.getClient().getCertificateAuthority();
+      const adminIdentity = gateway.getCurrentIdentity();
+
+      // Register the user, enroll the user, and import the new identity into the wallet.
+      const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: cardId, role: 'client' }, adminIdentity);
+      const enrollment = await ca.enroll({ enrollmentID: cardId, enrollmentSecret: secret });
+      const userIdentity = X509WalletMixin.createIdentity(orgMSPID, enrollment.certificate, enrollment.key.toBytes());
+      wallet.import(cardId, userIdentity);
+      console.log('Successfully registered and enrolled admin user ' + cardId + ' and imported it into the wallet');
+    
+      // Disconnect from the gateway.
+      await gateway.disconnect();
+      console.log('admin user admin disconnected');
+
+    } catch (err) {
+      //print and return error
+      console.log(err);
+      var error = {};
+      error.error = err.message;
+      return error;
+    }
+
+    await sleep(2000);
+    
+    try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
+
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
+
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
+      
+      let partner = {};
+      partner.id = partnerId;
       partner.name = name;
 
-      //add partner participant
-      const participantRegistry = await businessNetworkConnection.getParticipantRegistry(namespace + '.Partner');
-      await participantRegistry.add(partner);
+      // Submit the specified transaction.
+      console.log('\nSubmit Create Partner transaction.');
+      const createPartnerResponse = await contract.submitTransaction('CreatePartner', JSON.stringify(partner));
+      console.log('createPartnerResponse: ');
+      console.log(JSON.parse(createPartnerResponse.toString()));
 
-      //issue identity
-      const identity = await businessNetworkConnection.issueIdentity(namespace + '.Partner#' + partnerId, cardId);
+      console.log('\nGet partner state ');
+      const partnerResponse = await contract.evaluateTransaction('GetState', partnerId);
+      console.log('partnerResponse.parse_response: ')
+      console.log(JSON.parse(JSON.parse(partnerResponse.toString())));
 
-      //import card for identity
-      await importCardForIdentity(cardId, identity);
-
-      //disconnect
-      await businessNetworkConnection.disconnect('admin@clp-network');
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
 
       return true;
     }
@@ -171,26 +250,35 @@ module.exports = {
   */
   earnPointsTransaction: async function (cardId, accountNumber, partnerId, points) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //get the factory for the business network.
-      factory = businessNetworkConnection.getBusinessNetwork().getFactory();
-
-      //create transaction
-      const earnPoints = factory.newTransaction(namespace, 'EarnPoints');
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
+      
+      let earnPoints = {};
       earnPoints.points = points;
-      earnPoints.member = factory.newRelationship(namespace, 'Member', accountNumber);
-      earnPoints.partner = factory.newRelationship(namespace, 'Partner', partnerId);
+      earnPoints.member = accountNumber;
+      earnPoints.partner = partnerId;
 
-      //submit transaction
-      await businessNetworkConnection.submitTransaction(earnPoints);
+      // Submit the specified transaction.
+      console.log('\nSubmit EarnPoints transaction.');
+      const earnPointsResponse = await contract.submitTransaction('EarnPoints', JSON.stringify(earnPoints));
+      console.log('earnPointsResponse: ');
+      console.log(JSON.parse(earnPointsResponse.toString()));
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
 
       return true;
     }
@@ -213,26 +301,35 @@ module.exports = {
   */
   usePointsTransaction: async function (cardId, accountNumber, partnerId, points) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //get the factory for the business network.
-      factory = businessNetworkConnection.getBusinessNetwork().getFactory();
-
-      //create transaction
-      const usePoints = factory.newTransaction(namespace, 'UsePoints');
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
+      
+      let usePoints = {};
       usePoints.points = points;
-      usePoints.member = factory.newRelationship(namespace, 'Member', accountNumber);
-      usePoints.partner = factory.newRelationship(namespace, 'Partner', partnerId);
+      usePoints.member = accountNumber;
+      usePoints.partner = partnerId;
 
-      //submit transaction
-      await businessNetworkConnection.submitTransaction(usePoints);
+      // Submit the specified transaction.
+      console.log('\nSubmit UsePoints transaction.');
+      const usePointsResponse = await contract.submitTransaction('UsePoints', JSON.stringify(usePoints));
+      console.log('usePointsResponse: ');
+      console.log(JSON.parse(usePointsResponse.toString()));
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
 
       return true;
     }
@@ -253,20 +350,30 @@ module.exports = {
   */
   memberData: async function (cardId, accountNumber) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //get member from the network
-      const memberRegistry = await businessNetworkConnection.getParticipantRegistry(namespace + '.Member');
-      const member = await memberRegistry.get(accountNumber);
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      console.log('\nGet member state ');
+      let member = await contract.submitTransaction('GetState', accountNumber);
+      member = JSON.parse(JSON.parse(member.toString()));
+      console.log(member);
 
-      //return member object
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
+
       return member;
     }
     catch(err) {
@@ -286,20 +393,30 @@ module.exports = {
   */
   partnerData: async function (cardId, partnerId) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //get member from the network
-      const partnerRegistry = await businessNetworkConnection.getParticipantRegistry(namespace + '.Partner');
-      const partner = await partnerRegistry.get(partnerId);
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      console.log('\nGet partner state ');
+      let partner = await contract.submitTransaction('GetState', partnerId);
+      partner = JSON.parse(JSON.parse(partner.toString()));
+      console.log(partner);
 
-      //return partner object
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
+
       return partner;
     }
     catch(err) {
@@ -318,18 +435,30 @@ module.exports = {
   */
   allPartnersInfo : async function (cardId) {
 
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
     try {
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //query all partners from the network
-      const allPartners = await businessNetworkConnection.query('selectPartners');
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
 
-      //return allPartners object
+      console.log('\nGet all partners state ');
+      let allPartners = await contract.evaluateTransaction('GetState', 'all-partners');
+      allPartners = JSON.parse(JSON.parse(allPartners.toString()));
+      console.log(allPartners);
+
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
+
       return allPartners;
     }
     catch(err) {
@@ -345,21 +474,33 @@ module.exports = {
   * Get all EarnPoints transactions data
   * @param {String} cardId Card id to connect to network
   */
-  earnPointsTransactionsInfo: async function (cardId) {
+  earnPointsTransactionsInfo: async function (cardId, userType, userId) {
+
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
 
     try {
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //query EarnPoints transactions on the network
-      const earnPointsResults = await businessNetworkConnection.query('selectEarnPoints');
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
 
-      //return earnPointsResults object
-      return earnPointsResults;
+      console.log(`\nGet earn points transactions state for ${userType} ${userId}`);
+      let earnPointsTransactions = await contract.evaluateTransaction('EarnPointsTransactionsInfo', userType, userId);
+      earnPointsTransactions = JSON.parse(JSON.parse(earnPointsTransactions.toString()));
+      console.log(earnPointsTransactions);
+
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
+
+      return earnPointsTransactions;
     }
     catch(err) {
       //print and return error
@@ -375,21 +516,33 @@ module.exports = {
   * Get all UsePoints transactions data
   * @param {String} cardId Card id to connect to network
   */
-  usePointsTransactionsInfo: async function (cardId) {
+  usePointsTransactionsInfo: async function (cardId, userType, userId) {
+
+    // Create a new file system based wallet for managing identities.
+    const walletPath = path.join(process.cwd(), '/wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
 
     try {
-      //connect to network with cardId
-      businessNetworkConnection = new BusinessNetworkConnection();
-      await businessNetworkConnection.connect(cardId);
+      // Create a new gateway for connecting to our peer node.
+      const gateway2 = new Gateway();
+      await gateway2.connect(ccp, { wallet, identity: cardId, discovery: gatewayDiscovery });
 
-      //query UsePoints transactions on the network
-      const usePointsResults = await businessNetworkConnection.query('selectUsePoints');
+      // Get the network (channel) our contract is deployed to.
+      const network = await gateway2.getNetwork('mychannel');
 
-      //disconnect
-      await businessNetworkConnection.disconnect(cardId);
+      // Get the contract from the network.
+      const contract = network.getContract('customerloyalty');
 
-      //return usePointsResults object
-      return usePointsResults;
+      console.log(`\nGet use points transactions state for ${userType} ${userId}`);
+      let usePointsTransactions = await contract.evaluateTransaction('UsePointsTransactionsInfo', userType, userId);
+      usePointsTransactions = JSON.parse(JSON.parse(usePointsTransactions.toString()));
+      console.log(usePointsTransactions);
+
+      // Disconnect from the gateway.
+      await gateway2.disconnect();
+
+      return usePointsTransactions;
     }
     catch(err) {
       //print and return error

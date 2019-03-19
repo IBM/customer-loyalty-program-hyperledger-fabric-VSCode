@@ -258,7 +258,7 @@ app.post('/api/memberData', function(req, res) {
     })
     .then(() => {
       //get UsePoints transactions from the network
-      network.usePointsTransactionsInfo(cardId)
+      network.usePointsTransactionsInfo(cardId, 'member', accountNumber)
         .then((usePointsResults) => {
           //return error if error in response
           if (usePointsResults.error != null) {
@@ -272,7 +272,7 @@ app.post('/api/memberData', function(req, res) {
 
         }).then(() => {
           //get EarnPoints transactions from the network
-          network.earnPointsTransactionsInfo(cardId)
+          network.earnPointsTransactionsInfo(cardId, 'member', accountNumber)
             .then((earnPointsResults) => {
               //return error if error in response
               if (earnPointsResults.error != null) {
@@ -339,7 +339,7 @@ app.post('/api/partnerData', function(req, res) {
     })
     .then(() => {
       //get UsePoints transactions from the network
-      network.usePointsTransactionsInfo(cardId)
+      network.usePointsTransactionsInfo(cardId, 'partner', partnerId)
         .then((usePointsResults) => {
           //return error if error in response
           if (usePointsResults.error != null) {
@@ -356,7 +356,7 @@ app.post('/api/partnerData', function(req, res) {
         })
         .then(() => {
           //get EarnPoints transactions from the network
-          network.earnPointsTransactionsInfo(cardId)
+          network.earnPointsTransactionsInfo(cardId, 'partner', partnerId)
             .then((earnPointsResults) => {
               //return error if error in response
               if (earnPointsResults.error != null) {

@@ -1,23 +1,19 @@
 {
-  "name": "clp-network",
-  "version": "0.0.1",
-  "description": "A customer loyalty program network",
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "mocha --recursive"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Raheel",
-  "email": "raheel.zubairy@ibm.com",
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "composer-cli": "^0.19.4",
-    "composer-admin": "^0.19.4",
-    "composer-client": "^0.19.4",
-    "composer-common": "^0.19.4",
-    "composer-connector-embedded": "^0.19.4",
-    "body-parser": "^1.18.2",
-    "composer-playground": "latest",
-    "express": "^4.16.2",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "fabric-ca-client": "~1.4.0",
+    "fabric-network": "~1.4.0",
+    "morgan": "^1.9.1",
     "request": "^2.83.0"
   }
 }
