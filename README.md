@@ -86,7 +86,7 @@ We will use the IBM Blockchain Platform extension to package the Fabcar smart co
 
 <br>
 <p align="center">
-  <img src="doc-gifs/package-smart-contract.gif">
+  <img src="docs/doc-gifs/package-smart-contract.gif">
 </p>
 <br>
 
@@ -101,7 +101,7 @@ We will use the IBM Blockchain Platform extension to package the Fabcar smart co
 
 <br>
 <p align="center">
-  <img src="doc-gifs/deploy-local.gif">
+  <img src="docs/doc-gifs/deploy-local.gif">
 </p>
 <br>
 
@@ -136,7 +136,7 @@ You can find the app running at http://localhost:8000/
 
 <br>
 <p align="center">
-  <img src="doc-images/app.png">
+  <img src="docs/doc-images/app.png">
 </p>
 <br>
 
