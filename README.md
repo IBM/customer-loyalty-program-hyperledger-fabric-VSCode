@@ -40,100 +40,111 @@ This code pattern is for developers looking to start building blockchain applica
 + [Express.js](https://expressjs.com/) is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications
 + [Bootstrap](https://getbootstrap.com/) Bootstrap is an open source toolkit for developing with HTML, CSS, and JS
 
+## Running the application locally
 
-# Running the Application
+Follow these steps to set up and run this code pattern. The steps are described in detail below.
 
-Follow these steps to setup and run this code pattern. The steps are described in detail below.
+### Prerequisites
 
-## Prerequisite
-- [npm](https://www.npmjs.com/)  (v5.x)
-- [Node](https://nodejs.org/en/) (version 8.9 or higher - note version 9 is not supported)
-* to install specific Node version you can use [nvm](https://davidwalsh.name/nvm)
+You will need to follow the requirements for the [IBM Blockchain Platform Extension for VS Code](https://github.com/IBM-Blockchain/blockchain-vscode-extension/blob/master/README.md#requirements):
 
-  Example:
-  + 1. `nvm install 8.9.4`
-  + 2. `nvm use v8.9.4`
-  + 3. Output `Now using node v8.9.4 (npm v6.1.0)`
-- [Hyperledger Composer](https://hyperledger.github.io/composer/installing/development-tools.html)
-  * to install composer cli
-    `npm install -g composer-cli@0.19.4`
-  * to install composer-rest-server
-    `npm install -g composer-rest-server@0.19.4`
-  * to install generator-hyperledger-composer
-    `npm install -g generator-hyperledger-composer@0.19.4`
+- [VSCode version 1.26 or greater](https://code.visualstudio.com)
+- [Yeoman (yo) v2.x](http://yeoman.io/)
+- [Docker version v17.06.2-ce or greater](https://www.docker.com/get-docker)
+- [Docker Compose v1.14.0 or greater](https://docs.docker.com/compose/install/)
 
-## Steps
+### Steps
 1. [Clone the repo](#1-clone-the-repo)
-2. [Generate the Business Network Archive](#2-generate-the-business-network-archive)
-3. [Deploy Network](#3-deploy-network)
-      - [Deploy to Fabric locally](./docs/deploy-local-fabric.md)
-      - [Deploy to IBM Blockchain Starter Plan](./docs/deploy-ibm-starter.md)
-4. [Run Application](#4-run-application)
+2. [Package the smart contract](#2-package-the-smart-contract)
+3. [Setup network locally and deploy the smart contract](#3-setup-network-locally-and-deploy-the-smart-contract)
+4. [Run the application](#4-run-the-application)
+
 
 
 ## 1. Clone the repo
 
-Clone the `Customer Loyalty Program with Blockchain` repo locally. In a terminal, run:
+Clone this repository in a folder your choice:
 
-`git clone https://github.com/IBM/customer-loyalty-program`
-
-## 2. Generate the Business Network Archive
-
-Next we will generate the Business Network Archive (BNA) file from the root directory.  
-This file will contain your network including:
-- the model defined in the `org.clp.biznet.cto` file in the `models` folder
-- the logic behind transactions in the `logic.js` file in the `lib` folder
-- permissions defined in the `permissions.acl` file
-- queries defined in the `queries.qry` file
-
-Run the following the command to create the bna file:
-```
-cd customer-loyalty-program/
-npm install
+```bash
+git clone https://github.com/IBM/customer-loyalty-program-hyperledger-fabric.git
+cd customer-loyalty-program-hyperledger-fabric
 ```
 
-The `composer archive create` command in `package.json` has created a file called `clp-network@0.0.1.bna`.   
+
+## 2. Package the smart contract
+
+We will use the IBM Blockchain Platform extension to package the Fabcar smart contract.
+* Open Visual Studio code and open the `contract` folder from this repository that was cloned earlier.
+
+* Press the `F1` key to see the different VS code options. Choose `IBM Blockchain Platform: Package a Smart Contract Project`.
+
+* Click the `IBM Blockchain Platform` extension button on the left. This will show the packaged contracts on top and the blockchain connections on the bottom.
+
+* Next, right click on the packaged contract to export it and choose `Export Package`
+
+* Choose a location on your machine and save `.cds` file.  We will use this packages smart contract later to deploy on our work.
+
+<br>
+<p align="center">
+  <img src="doc-gifs/package-smart-contract.gif">
+</p>
+<br>
+
+## 3. Setup network locally and deploy the smart contract
+
+* Click on the overflow menu for `LOCAL FABRIC OPS`, and choose `Start Fabric Runtime` to start a network. This will download the Docker images required for a local Fabric setup, and start the network. Once setup is complete, you should see under `LOCAL FABRIC OPS`, options to install and instantiate smart contract, your `Channels` information, your peer under `Nodes` and the organization msp under `Organizations`. You are now ready to install the smart contract.
+
+* Click on `+Install` under `Installed` dropdown in the `LOCAL FABRIC OPS` console. Choose the peer: `peer0.org1.example.com`. Choose the `customerloyalty@1.0.0` contract. You should see a notification for successful install of the smart contract, and the smart contract listed under `Installed` in your `LOCAL FABRIC OPS` console. You are now ready to instantiate the smart contract.
+
+* Click on `+Instantiate` under `Instantiated` dropdown in the `LOCAL FABRIC OPS` console. Choose the channel: `mychannel`. Choose the `customerloyalty@1.0.0` contract.  Type in `instantiate` for the function. You can press **Enter** for optional arguments.  Once this is successfully instantiated, you should see a successful notification in the output view, and the smart contract listed under `Instantiated` in your `LOCAL FABRIC OPS` console.
 
 
-
-## 3. Deploy Network
-
-The bna can be deployed to a local instance of Fabric or can use IBM Blockchain Starter Plan.
-
-- [Deploy to Hyperledger Fabric locally](./docs/deploy-local-fabric.md)
-- [Deploy to IBM Blockchain Starter Plan](./docs/deploy-ibm-starter.md)
+<br>
+<p align="center">
+  <img src="doc-gifs/deploy-local.gif">
+</p>
+<br>
 
 
-## 4. Run Application
+## 4. Run the application
 
-Go into the `web-app` folder and install the dependency:
+* #### Enroll admin
+  - First, navigate to the `web-app` directory, and install the node dependencies.
+    ```bash
+    cd web-app/
+    npm install
+    ```
 
-```
-cd web-app/
-npm install
-```
+  - Run the `enrollAdmin.js` script
+    ```bash
+    node enrollAdmin.js
+    ```
 
-Start the application:
-```
-npm start
-```
+  - You should see the following in the terminal:
+    ```bash
+    msg: Successfully enrolled admin user app-admin and imported it into the wallet
+    ```
 
-The application should now be running at:
-`http://localhost:8000`
+* #### Run the application server
+  - From the `web-app` directory, start the server.
 
-<div style='border: 2px solid #f00;'>
-  <img width="1000" src="docs/doc-images/app.png">
-</div>
-</br>
+    ```bash
+    npm start
+    ```
 
-### Deploy application to IBM Cloud
+You can find the app running at http://localhost:8000/
 
-If your hosting the network on IBM Blockchain Starter Plan, then you can [deploy the app to IBM Cloud](./docs/deploy-app-cloud.md).
+<br>
+<p align="center">
+  <img src="doc-images/app.png">
+</p>
+<br>
 
 ## Links
-* [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/)
+* [Hyperledger Fabric Docs](http://hyperledger-fabric.readthedocs.io/en/latest/)
+* [IBM Code Patterns for Blockchain](https://developer.ibm.com/patterns/category/blockchain/)
 
 ## License
-This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
+This code pattern is licensed under the Apache Software License, Version 2. Separate third-party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 [Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
