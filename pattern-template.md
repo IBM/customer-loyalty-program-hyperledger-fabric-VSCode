@@ -19,7 +19,7 @@ Use Hyperledger Fabric V1.4, IBM Blockchain 2.0, and Node.js to create the block
 
 # Summary
 
-A customer loyalty program allows companies to attract new customers and retain customers with special deals and discounts. The programs are typically based on a points system, in which a program member earns points on purchases, which can be redeemed on special deals. Loyalty programs can have multiple companies as partners to serve a customer base. For consumers managing an array of loyalty programs, blockchain could provide instant redemption and exchange for multiple loyalty point currencies on a single platform. With only one digital “wallet” for points, consumers would not have to hunt for each program’s options, limitations, and redemption rules.
+This code pattern is for developers looking to start building blockchain applications with Hyperledger Fabric and IBM Blockchain extension for VSCode. Learn how to set up a Hyperledger Fabric customer rewards program network on a local Fabric network, install and instantiate a smart contract through IBM Blockchain extension for VSCode, and develop a Node.js web application with the Hyperledger Fabric SDK to interact with the deployed network.
 
 # Technologies
 
