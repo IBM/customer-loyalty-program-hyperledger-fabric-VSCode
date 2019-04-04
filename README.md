@@ -8,10 +8,10 @@ In this code pattern, we will create a customer loyalty program as a blockchain 
 
 Similarly for the partner, they will register by creating an identity on the network and an access key which will be used to view their records.  Partners are allowed to view only transactions they were part of, and thus can keep track of all their transactions where they allocated or redeemed points.  The web application shows a basic dashboard for the partner displaying the total points that they have allocated and redeemed to members.  As transactions get complex, the partner can perform analysis on their transactions to create informative dashboards.
 
-This code pattern is for developers looking to start building blockchain applications with Hyperledger Fabric and IBM Blockchain Platform 2.0. When the reader has completed this code pattern, they will understand how to:
+This code pattern is for developers looking to start building blockchain applications with Hyperledger Fabric and IBM Blockchain extension for VSCode. When the reader has completed this code pattern, they will understand how to:
 
-* Setup a Hyperledger Fabric network on IBM Blockchain Platform 2.0
-* Install and instantiate smart contract through the IBM Blockchain Platform 2.0 or on a local Fabric network.
+* Setup a Hyperledger Fabric network on IBM Blockchain extension for VSCode.
+* Install and instantiate smart contract through the IBM Blockchain extension on VSCode on a local fabric connection.
 * Develop a Node.js web application with the Hyperledger Fabric SDK to interact with the deployed network
 
 
