@@ -66,8 +66,8 @@ You will need to follow the requirements for the [IBM Blockchain Platform Extens
 Clone this repository in a folder your choice:
 
 ```bash
-git clone https://github.com/IBM/customer-loyalty-program-hyperledger-fabric.git
-cd customer-loyalty-program-hyperledger-fabric
+git clone https://github.com/IBM/customer-loyalty-program-hyperledger-fabric-VSCode.git
+cd customer-loyalty-program-hyperledger-fabric-VSCode
 ```
 
 
