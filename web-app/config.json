@@ -3,7 +3,7 @@
     "appAdmin": "admin",
     "appAdminSecret": "adminpw",
     "orgMSPID": "Org1MSP",
-    "caName": "ca.example.com",
+    "caName": "ca.org1.example.com",
     "userName": "user1",
     "gatewayDiscovery": { "enabled": false }
 }
