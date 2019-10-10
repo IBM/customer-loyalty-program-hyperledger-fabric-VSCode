@@ -189,11 +189,11 @@ $('.use-points-50').click(function() {
 });
 
 $('.use-points-150').click(function() {
-  usePoints(100);
+  usePoints(150);
 });
 
 $('.use-points-200').click(function() {
-  usePoints(150);
+  usePoints(200);
 });
 
 
