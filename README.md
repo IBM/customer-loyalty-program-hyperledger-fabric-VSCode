@@ -14,7 +14,6 @@ This code pattern is for developers looking to start building blockchain applica
 * Install and instantiate smart contract through the IBM Blockchain extension on VSCode on a local fabric connection.
 * Develop a Node.js web application with the Hyperledger Fabric SDK to interact with the deployed network
 
-
 # Architecture Flow
 
 <p align="center">
