@@ -53,8 +53,7 @@ Follow these steps to set up and run this code pattern.
 
 You will need to follow the requirements for the [IBM Blockchain Platform Extension for VS Code](https://github.com/IBM-Blockchain/blockchain-vscode-extension/blob/master/README.md#requirements):
 
-- [VSCode version 1.26 or greater](https://code.visualstudio.com)
-- [Yeoman (yo) v2.x](http://yeoman.io/)
+- [VSCode version 1.38 or greater](https://code.visualstudio.com)
 - [Docker version v17.06.2-ce or greater](https://www.docker.com/get-docker)
 - [Docker Compose v1.14.0 or greater](https://docs.docker.com/compose/install/)
 
