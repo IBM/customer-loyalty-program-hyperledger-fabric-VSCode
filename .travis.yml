@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+  - "8"
+
+script:
+  - cd contract && npm install && npm run lint && cd ../web-app && npm install && npm run lint

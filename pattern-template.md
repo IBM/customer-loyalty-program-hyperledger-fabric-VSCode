@@ -46,7 +46,7 @@ This code pattern is for developers looking to start building blockchain applica
 
 # Flow
 
-![Architecture flow](https://github.com/ash7594/customer-loyalty-program/blob/master/docs/doc-images/arch-flow.png?raw=true)
+![Architecture flow](https://user-images.githubusercontent.com/8854447/72633938-7ead0f00-3927-11ea-94af-7043d1c6ad53.png)
 
 **Note** The blockchain network will have multiple members and partners
 

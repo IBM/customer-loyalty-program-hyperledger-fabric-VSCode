@@ -10,7 +10,7 @@ class CustomerLoyalty extends Contract {
     // Init function executed when the ledger is instantiated
     async instantiate(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        
+
         await ctx.stub.putState('instantiate', Buffer.from('INIT-LEDGER'));
         await ctx.stub.putState(allPartnersKey, Buffer.from(JSON.stringify([])));
         await ctx.stub.putState(earnPointsTransactionsKey, Buffer.from(JSON.stringify([])));
@@ -38,7 +38,7 @@ class CustomerLoyalty extends Contract {
         allPartners = JSON.parse(allPartners);
         allPartners.push(partner);
         await ctx.stub.putState(allPartnersKey, Buffer.from(JSON.stringify(allPartners)));
-        
+
         return JSON.stringify(partner);
     }
 
@@ -90,12 +90,12 @@ class CustomerLoyalty extends Contract {
         let userTransactions = [];
 
         for (let transaction of transactions) {
-            if (userType == 'member') {
-                if (transaction.member == userId) {
+            if (userType === 'member') {
+                if (transaction.member === userId) {
                     userTransactions.push(transaction);
                 }
-            } else if (userType == 'partner') {
-                if (transaction.partner == userId) {
+            } else if (userType === 'partner') {
+                if (transaction.partner === userId) {
                     userTransactions.push(transaction);
                 }
             }
@@ -111,12 +111,12 @@ class CustomerLoyalty extends Contract {
         let userTransactions = [];
 
         for (let transaction of transactions) {
-            if (userType == 'member') {
-                if (transaction.member == userId) {
+            if (userType === 'member') {
+                if (transaction.member === userId) {
                     userTransactions.push(transaction);
                 }
-            } else if (userType == 'partner') {
-                if (transaction.partner == userId) {
+            } else if (userType === 'partner') {
+                if (transaction.partner === userId) {
                     userTransactions.push(transaction);
                 }
             }
