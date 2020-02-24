@@ -46,7 +46,7 @@ async function main() {
         console.log('msg: Successfully enrolled admin user ' + appAdmin + ' and imported it into the wallet');
 
     } catch (error) {
-        console.error('Failed to enroll admin user ' + appAdmin + ': ${error}');
+        console.error('Failed to enroll admin user ' + appAdmin + ': ' + error);
         process.exit(1);
     }
 }
