@@ -43,5 +43,7 @@ jobs:
 
       - name: Run chaincode
         run: |
+          sudo chmod +rwx start.sh
+          sudo chmod +rwx stop.sh
           sudo chmod -R a+rwx test-network
           ./start.sh
