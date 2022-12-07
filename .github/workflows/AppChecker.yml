@@ -1,0 +1,47 @@
+name: App Checker
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current project
+        uses: actions/checkout@v3
+        with:
+          path: .
+
+      - name: Setup docker
+        uses: docker-practice/actions-setup-docker@master
+        
+      - name: Setup docker compose
+        uses: isbang/compose-action@v1.4.1
+
+      - name: Unzip test-network
+        uses: montudor/action-zip@v1
+        with:
+          args: unzip -qq test-network.zip -d test-network
+
+      - name: Setup NodeJS  
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: |
+          cd web-app
+          npm i --force
+          cd ../contract
+          npm i --force
+
+      - name: Curl fabrics
+        run: |
+          curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+
+      - name: Install chaincode
+        run: |
+          ./install-fabric.sh docker binaries
+
+      - name: Run chaincode
+        run: |
+          sudo chmod -R a+rwx test-network
+          ./start.sh
