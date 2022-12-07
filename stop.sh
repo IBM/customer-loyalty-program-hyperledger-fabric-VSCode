@@ -5,5 +5,5 @@
 #
 
 cd test-network
-source ../network.sh down
+source ./network.sh down
 cd ../
