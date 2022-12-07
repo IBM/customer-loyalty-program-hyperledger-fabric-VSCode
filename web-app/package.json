@@ -12,8 +12,8 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "fabric-ca-client": "~1.4.5",
-    "fabric-network": "~1.4.5",
+    "fabric-ca-client": "^2.2.16",
+    "fabric-network": "^2.2.16",
     "morgan": "^1.9.1",
     "request": "^2.88.0"
   },
